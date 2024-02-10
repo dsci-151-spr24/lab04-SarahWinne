@@ -161,7 +161,7 @@ laquinta %>%
     You'll need to refer to your notes from Exercise 7 about which country the non-US locations are in.
     Here is some starter code to get you going:
 
-```{r eval = FALSE}
+```{r}
 laquinta <- laquinta %>%
   mutate(country = case_when(
     state %in% state.abb     ~ "United States",
@@ -178,12 +178,23 @@ Going forward we will work with the data from the United States only.
 All Denny's locations are in the United States, so we don't need to worry about them.
 However we do need to filter the La Quinta dataset for locations in United States.
 
-```{r, eval=FALSE}
+```{r}
 laquinta <- laquinta %>%
   filter(country == "United States")
 ```
 
 9.  Which states have the most and fewest Denny's locations? What about La Quinta? Is this surprising? Why or why not?
+
+```{r}
+
+dennys %>% 
+  group_by(state) %>%
+  count() %>%
+  arrange(n)
+
+```
+
+***It makes sense to me, because states like Delaware are smaller and Washington DC is also very small, especially when comparing to Texas or California.***
 
 Next, let's calculate which states have the most Denny's locations *per thousand square miles*.
 This requires *joining* information from the frequency tables you created in Exercise 8 with information from the `states` data frame.
