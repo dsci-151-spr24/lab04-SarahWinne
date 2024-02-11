@@ -215,6 +215,23 @@ In the next exercise you will need to build on this pipe.
 
 10. Which states have the most Denny's locations per thousand square miles? What about La Quinta?
 
+```{r}
+dennys %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  mutate(per_thousand = n/area*1000) %>%
+  arrange(desc(per_thousand))%>%
+  slice(1:5)
+```
+```{r}
+laquinta %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation")) %>%
+  mutate(per_thousand = n/area*1000) %>%
+  arrange(desc(per_thousand)) %>%
+  slice(1:5)
+```
+
 Next, we put the two datasets together into a single data frame.
 However before we do so, we need to add an identifier variable.
 We'll call this `establishment` and set the value to `"Denny's"` and `"La Quinta"` for the `dennys` and `laquinta` data frames, respectively.
@@ -247,10 +264,26 @@ You can also choose different themes to change the overall look of your plots, s
 
 11. Filter the data for observations in North Carolina only, and recreate the plot.
     You should also adjust the transparency of the points, by setting the `alpha` level, so that it's easier to see the overplotted ones.
-    Visually, does Mitch Hedberg's joke appear to hold here?
+    Visually, does Mitch Hedberg's joke appear to hold here? 
+
+```{r}
+dn_lq %>% 
+  filter(state == "NC") %>%
+ggplot(dn_lq, mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.4)
+```
+***The joke matches in some places, but also not every single La Quinta or Denny's is right next to each other***
 
 12. Now filter the data for observations in Texas only, and recreate the plot, with an appropriate `alpha` level.
     Visually, does Mitch Hedberg's joke appear to hold here?
+
+```{r}
+dn_lq %>% 
+  filter(state == "TX") %>%
+ggplot(dn_lq, mapping = aes(x = longitude, y = latitude, color = establishment)) +
+  geom_point(alpha = 0.1)
+```
+***The joke matches a lot better in Texas than North Carolina, espeiclly in those masses of points where Denny's and La Quinta's are piled on top of each other.***
 
 That's it for now!
 In the next lab we will take a more quantitative approach to answering these questions.
